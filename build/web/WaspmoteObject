@@ -1,0 +1,483 @@
+<%-- 
+    Document   : index/result   
+    Created on : Oct 26, 2015, 14:28:15 AM
+    Author     : Eduardo Murillo
+--%>
+<%@page import="java.util.GregorianCalendar"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.waspmote.model.Waspmote"%>
+<%@page import="java.util.HashMap"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Mapa Waspmote</title>      
+        
+        <style>
+            #map-canvas {
+              width: 100%;
+              height: 900px;
+              background-color: #CCC;
+            }
+        </style>
+         <script src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true"></script>
+         
+    </head>
+    <body>
+        
+        <h1 id="titulo">Waspmotes</h1>
+        <button id="actualizar">Actualizar</button>
+        <div id="somediv"></div>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            
+            
+           
+            
+        </script>
+        
+        <div id="botones_div" >
+            <button name="bosque_js" onclick='botones("bosque")'>Bosque</button>
+            <button name="ciudad_js" onclick='botones("ciudad")'>Ciudad</button>
+            <button name="inundaciones_js" onclick='botones("inundaciones")'>Inundaciones</button>
+            <button name="camaronera_js" onclick='botones("camaronera")'>Camaronera</button>
+        </div>
+        <div id="nombre_medicion">
+            <!--con javascript pondremos aquí los botones dinámicos...-->
+        </div>
+        <div id="map-canvas"></div>
+         
+          <script>
+            function botones(tipo_waspmote) {
+                //Removemos los botones viejos
+                var nodo = document.getElementById("nombre_medicion");
+
+                //Borramos los botones anteriores si existen...
+                if(nodo.hasChildNodes()){
+                    while (nodo.firstChild) {
+                        nodo.removeChild(nodo.firstChild);
+                    }
+                }
+                
+                if(tipo_waspmote == "ciudad"){
+                    
+                    //Agregamos los nuevos botones (bate, Temp, hum, ruido, luz, polvo)
+                    var bat_btn = document.createElement("BUTTON");
+                    var temp_btn = document.createElement("BUTTON");
+                    var hum_btn = document.createElement("BUTTON");
+                    var ruido_btn = document.createElement("BUTTON");
+                    var luz_btn = document.createElement("BUTTON");
+                    var polvo_btn = document.createElement("BUTTON");
+                    
+                    //bat_btn.setAttribute("style", "display:inline-block");
+                    
+                    bat_btn.appendChild(document.createTextNode("Batería"));
+                    bat_btn.setAttribute("value", "b_ciudad_BAT");
+                    bat_btn.setAttribute("form", "form1");
+                    bat_btn.setAttribute("method", "get");
+                    bat_btn.setAttribute("name", "tipo_med");
+                   
+                    temp_btn.appendChild(document.createTextNode("Temperatura"));
+                    temp_btn.setAttribute("value", "b_ciudad_TCA");
+                    temp_btn.setAttribute("form", "form1");
+                    temp_btn.setAttribute("method", "get");
+                    temp_btn.setAttribute("name", "tipo_med");
+                    
+                    hum_btn.appendChild(document.createTextNode("Humedad"));
+                    hum_btn.setAttribute("value", "b_ciudad_HUMA");
+                    hum_btn.setAttribute("form", "form1");
+                    hum_btn.setAttribute("method", "get");
+                    hum_btn.setAttribute("name", "tipo_med");
+                    
+                    ruido_btn.appendChild(document.createTextNode("Ruido"));
+                    ruido_btn.setAttribute("value", "b_ciudad_MCP");
+                    ruido_btn.setAttribute("form", "form1");
+                    ruido_btn.setAttribute("method", "get");
+                    ruido_btn.setAttribute("name", "tipo_med");
+                    
+                    luz_btn.appendChild(document.createTextNode("Luz"));
+                    luz_btn.setAttribute("value", "b_ciudad_LUM");
+                    luz_btn.setAttribute("form", "form1");
+                    luz_btn.setAttribute("method", "get");
+                    luz_btn.setAttribute("name", "tipo_med");
+                    
+                    polvo_btn.appendChild(document.createTextNode("Polvo"));
+                    polvo_btn.setAttribute("value", "b_ciudad_DUST");
+                    polvo_btn.setAttribute("form", "form1");
+                    polvo_btn.setAttribute("method", "get");
+                    polvo_btn.setAttribute("name", "tipo_med");
+                    
+                    var form1 = document.createElement("form");
+                    form1.setAttribute("action", "WaspmoteMap");
+                    form1.setAttribute("method", "get");
+                    form1.setAttribute("id", "form1");
+
+                    form1.appendChild(bat_btn);
+                    form1.appendChild(temp_btn);
+                    form1.appendChild(hum_btn);
+                    form1.appendChild(ruido_btn);
+                    form1.appendChild(luz_btn);
+                    form1.appendChild(polvo_btn);
+                    
+                    var grupo_botones = document.getElementById("nombre_medicion");
+                    
+                    grupo_botones.appendChild(form1);
+                    
+                }
+                else if(tipo_waspmote == "bosque"){
+                    
+                    var bat_btn = document.createElement("BUTTON");
+                    var temp_btn = document.createElement("BUTTON");
+                    var hum_btn = document.createElement("BUTTON");
+                    var CO2_btn = document.createElement("BUTTON");
+                    
+                    //bat_btn.setAttribute("style", "display:inline-block");
+                    
+                    bat_btn.appendChild(document.createTextNode("Batería"));
+                    bat_btn.setAttribute("value", "b_bosque_BAT");
+                    bat_btn.setAttribute("form", "form1");
+                    bat_btn.setAttribute("method", "get");
+                    bat_btn.setAttribute("name", "tipo_med");
+                   
+                    temp_btn.appendChild(document.createTextNode("Temperatura"));
+                    temp_btn.setAttribute("value", "b_ciudad_TCA");
+                    temp_btn.setAttribute("form", "form1");
+                    temp_btn.setAttribute("method", "get");
+                    temp_btn.setAttribute("name", "tipo_med");
+                    
+                    hum_btn.appendChild(document.createTextNode("Humedad"));
+                    hum_btn.setAttribute("value", "b_bosque_HUMA");
+                    hum_btn.setAttribute("form", "form1");
+                    hum_btn.setAttribute("method", "get");
+                    hum_btn.setAttribute("name", "tipo_med");
+                    
+                    CO2_btn.appendChild(document.createTextNode("CO2"));
+                    CO2_btn.setAttribute("value", "b_bosque_CO2");
+                    CO2_btn.setAttribute("form", "form1");
+                    CO2_btn.setAttribute("method", "get");
+                    CO2_btn.setAttribute("name", "tipo_med");
+                    
+                    var form1 = document.createElement("form");
+                    form1.setAttribute("action", "WaspmoteMap");
+                    form1.setAttribute("method", "get");
+                    form1.setAttribute("id", "form1");
+
+                    form1.appendChild(bat_btn);
+                    form1.appendChild(temp_btn);
+                    form1.appendChild(hum_btn);
+                    form1.appendChild(CO2_btn);
+                    
+                    var grupo_botones = document.getElementById("nombre_medicion");
+                    
+                    grupo_botones.appendChild(form1);
+                    
+                }
+                else if(tipo_waspmote == "inundaciones"){
+                    
+                    var bat_btn = document.createElement("BUTTON");
+                    var temp_prof = document.createElement("BUTTON");
+                    
+                    //bat_btn.setAttribute("style", "display:inline-block");
+                    
+                    bat_btn.appendChild(document.createTextNode("Batería"));
+                    bat_btn.setAttribute("value", "b_inundaciones_BAT");
+                    bat_btn.setAttribute("form", "form1");
+                    bat_btn.setAttribute("method", "get");
+                    bat_btn.setAttribute("name", "tipo_med");
+                   
+                    temp_prof.appendChild(document.createTextNode("Profundidad"));
+                    temp_prof.setAttribute("value", "b_inundaciones_US");
+                    temp_prof.setAttribute("form", "form1");
+                    temp_prof.setAttribute("method", "get");
+                    temp_prof.setAttribute("name", "tipo_med");
+                    
+                    var form1 = document.createElement("form");
+                    form1.setAttribute("action", "WaspmoteMap");
+                    form1.setAttribute("method", "get");
+                    form1.setAttribute("id", "form1");
+
+                    form1.appendChild(bat_btn);
+                    form1.appendChild(temp_prof);
+                    
+                    var grupo_botones = document.getElementById("nombre_medicion");
+                    
+                    grupo_botones.appendChild(form1);
+                    
+                }
+                else if(tipo_waspmote == "camaronera"){
+                    
+                    var bat_btn = document.createElement("BUTTON");
+                    var temp_btn = document.createElement("BUTTON");
+                    var ph_btn = document.createElement("BUTTON");
+                    var oxi_btn = document.createElement("BUTTON");
+                    
+                    //bat_btn.setAttribute("style", "display:inline-block");
+                    
+                    bat_btn.appendChild(document.createTextNode("Batería"));
+                    bat_btn.setAttribute("value", "b_camaronera_BAT");
+                    bat_btn.setAttribute("form", "form1");
+                    bat_btn.setAttribute("method", "get");
+                    bat_btn.setAttribute("name", "tipo_med");
+                   
+                    temp_btn.appendChild(document.createTextNode("Temperatura"));
+                    temp_btn.setAttribute("value", "b_camaronera_TCA");
+                    temp_btn.setAttribute("form", "form1");
+                    temp_btn.setAttribute("method", "get");
+                    temp_btn.setAttribute("name", "tipo_med");
+                    
+                    ph_btn.appendChild(document.createTextNode("Acidez (pH)"));
+                    ph_btn.setAttribute("value", "b_camaronera_PH");
+                    ph_btn.setAttribute("form", "form1");
+                    ph_btn.setAttribute("method", "get");
+                    ph_btn.setAttribute("name", "tipo_med");
+                    
+                    oxi_btn.appendChild(document.createTextNode("Oxígeno Disuelto"));
+                    oxi_btn.setAttribute("value", "b_camaronera_DO");
+                    oxi_btn.setAttribute("form", "form1");
+                    oxi_btn.setAttribute("method", "get");
+                    oxi_btn.setAttribute("name", "tipo_med");
+                    
+                    var form1 = document.createElement("form");
+                    form1.setAttribute("action", "WaspmoteMap");
+                    form1.setAttribute("method", "get");
+                    form1.setAttribute("id", "form1");
+
+                    form1.appendChild(bat_btn);
+                    form1.appendChild(temp_btn);
+                    form1.appendChild(ph_btn);
+                    form1.appendChild(oxi_btn);
+                    
+                    var grupo_botones = document.getElementById("nombre_medicion");
+                    
+                    grupo_botones.appendChild(form1);
+                }
+            }
+        </script>
+        
+        <script>
+            
+            //Variables... 
+            var ventanaInformacion;
+            var map;
+            var markers = [];     //marcadores...
+            var maximo;
+            var respuestaJSON;    //Objeto JSON con los datos de las motas
+            
+            //Objeto JS que contiene los datos de las motas.
+            var Waspmotes = {timestamp: {}, medicion: {}, latitud: {}, longitud: {}, nombreMotas: []}
+            
+            /*var timestamp ={};                     //guardamaos la medicion para el info windows...
+            var medicion = {};
+            var latitud = {};
+            var longitud = {};
+            var nombreMotas = [];*/
+            var marker;
+            var heatmap;
+              
+            //Inicializar Mapa
+            function initialize() {
+              
+              var mapCanvas = document.getElementById('map-canvas');
+              var mapOptions = {
+                center: new google.maps.LatLng(-2.1833, -79.8833),
+                //center: new google.maps.LatLng(25.6586,-80.3568),
+                zoom: 12,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scaleControl: true
+              }
+              map = new google.maps.Map(mapCanvas, mapOptions)
+              
+              var styleArray = [
+                {
+                  featureType: "all",
+                  stylers: [
+                    { saturation: -80 }
+                  ]
+                },{
+                  featureType: "road.arterial",
+                  elementType: "geometry",
+                  stylers: [
+                    { hue: "#00ffee" },
+                    { saturation: 50 }
+                  ]
+                },{
+                  featureType: "poi.business",
+                  elementType: "labels",
+                  stylers: [
+                    { visibility: "off" }
+                  ]
+                }
+              ];             
+              map.setOptions({styles: styleArray});
+              
+              //Agregamos las motas...
+               <%  HashMap<String, Waspmote> motas = (HashMap<String, Waspmote>)request.getAttribute("motas"); 
+                    
+                    String nombreMedicion = (String)request.getAttribute("sensor");
+
+                    ArrayList<Waspmote> motasAL = new ArrayList<Waspmote>(motas.values());
+                    
+                    String max = (String)request.getAttribute("maximo");
+
+                    for(int i = 0; i < motasAL.size(); i++){
+                        Waspmote tmp = motasAL.get(i);
+                 %>
+                         
+                //aqui guardamos la información de la medicion en JavaScript, para poder crear el tooltip
+                <%= "Waspmotes.nombreMotas.push(\"" + tmp.obtenerIdWasp() + "\");" %>
+                <%= "Waspmotes.timestamp[\"" + tmp.obtenerIdWasp() + "\"] = \"" + tmp.obtenerTimestamp() + "\";" %>            
+                <%= "Waspmotes.medicion[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerMedicion(nombreMedicion) + "\");" %>
+                <%= "Waspmotes.latitud[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerLatitud() + "\");" %>
+                <%= "Waspmotes.longitud[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerLongitud() + "\");" %>
+                    
+                //Aqui cramos los markers...
+                <%=  "var myLatLng = {lat: " + tmp.obtenerLatitud() + ", lng: " + tmp.obtenerLongitud() + " };" %>
+                <%= "marker = new google.maps.Marker({ position: myLatLng, title:\"" + tmp.obtenerIdWasp() + "\"});"  %>
+                <%= "marker.setAnimation(google.maps.Animation.DROP);" %>
+               
+                <%= "markers.push(marker);" %>
+                   
+                //Si no usamos with, tenemos el closure problem. Creamos nuevo scope.
+                with({mark: marker}){
+                    mark.addListener('click',  function(){
+
+                           if(ventanaInformacion != null){
+                               ventanaInformacion.close();  //cerramos la ventana abierta...
+                           }
+                          
+                           var texto;
+                           if(mark.getTitle() != "WM_CITY_1"){
+                                texto = "<b>Nombre:</b> " + mark.getTitle() + "<br><b>Fecha/Hora</b>: " + timestamp[mark.getTitle()] + 
+                                        "<br><b>Medicion:</b> " + medicion[mark.getTitle()];
+                           }
+                           else{
+                               texto = "<b>Nombre:</b> " + mark.getTitle() + "<br><b>Fecha/Hora</b>: " + timestamp[mark.getTitle()] + 
+                                        "<br><b>Medicion:</b> " + medicion[mark.getTitle()]+ "<br><b>NODO COORDINADOR DIGIMESH</b>";
+                                        
+                           }
+
+                            //Creamos la ventana
+                            ventanaInformacion = new google.maps.InfoWindow({
+                                content: texto
+                            });
+
+                            //La mostramos...
+                            ventanaInformacion.open(map, mark);
+                       });
+                }
+                  
+                  <%= "marker.setMap(map);" %>
+
+                <% } %>
+                    
+                <%= "maximo = " + max + ";" %>
+                    
+                //Creamos el heatmap usando heatmap.js
+                heatmap = new HeatmapOverlay(map, 
+                {
+                    // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+                    "radius": 0.0005,   //Medido en escala del mapa si scaleRadius = true, caso contrario se mide en pixeles.
+                    "maxOpacity": 1, 
+                    // scales the radius based on map zoom
+                    "scaleRadius": true, 
+                    // if set to false the heatmap uses the global maximum for colorization
+                    // if activated: uses the data maximum within the current map boundaries 
+                    //   (there will always be a red spot with useLocalExtremas true)
+                    "useLocalExtremas": false,
+                    // which field name in your data represents the latitude - default "lat"
+                    latField: 'lat',
+                    // which field name in your data represents the longitude - default "lng"
+                    lngField: 'lng',
+                    // which field name in your data represents the data value - default "value"
+                    valueField: 'count'
+                }
+              );
+              
+              //Añadimos los datos.. Max es el maximo global de la meidicon)
+              testData={max: maximo, data:[]};
+            
+              //Llenamos los datos...
+              window.alert(testData.max);
+              var i = 0;
+              for(i = 0; i < Waspmotes.nombreMotas.length; i++){
+                  
+                  var nombre = Waspmotes.nombreMotas[i];
+                  var obj = {lat: Waspmotes.latitud[nombre], lng: Waspmotes.longitud[nombre], count: Waspmotes.medicion[nombre]};
+                  testData.data.push(obj);
+              }
+              
+              heatmap.setData(testData);   
+            }
+
+            
+            //Funcion que borrará los markers
+            function borrarMarkersMapa(){
+                 window.alert(markers.length);
+               
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                }
+                
+                //TODO: borrar el heatmap
+                markers = [];
+            }
+            
+            //con jQuery, hacemos que actualizar cree una solicitud GET para actualizar el mapa
+            var parametrosActualizacion = {
+                "tipo_med": "ciudad",
+                "actualizacion": "si",
+                "columna":"TCA"
+              };
+            
+            $(document).on("click", "#actualizar", function() { 
+                $.get("WaspmoteMap", parametrosActualizacion, function(responseText) {  
+                    $("#somediv").text(responseText);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+                    respuestaJSON = JSON.parse(responseText);             //Convertimos el string a un objeto JSON en
+                    
+                  
+                    borrarMarkersMapa();
+                    
+                    //Borramos el mapa                    
+                    //truco para borrar el mapa anterior... (creamos un punto con valor 0. si damos un 
+                    //dato vacio, persiste el mapa en miniatura...
+                    heatmap.setData({max: 0, data:[{lat: -2.993122, lng: -95.457636, count: 0}]});
+                    
+                    //Vaciamos los arreglos 
+                    Waspmotes.nombreMotas = [];
+                    Waspmotes.timestamp = [];
+                    Waspmotes.medicion = [];
+                    Waspmotes.latitud = [];
+                    Waspmotes.longitud = [];
+                    
+                    //creamos nuevamente los markers y el mapa de calor...
+                    crearMarkers(respuestaJSON);
+                    crearMapaDeCalor();
+                });
+                
+            });
+            
+            function crearMarkers(respuesta){
+                var i = 0;
+                for(i = 0; i < respuesta.length; i++){
+                     var mota = respuesta[i];
+                     
+                     window.alert(mota.id_wasp);
+                     
+               
+                   
+                }
+              
+            }
+            
+            //Cargar Mapa
+             google.maps.event.addDomListener(window, 'load', initialize);
+            
+         </script>
+         
+        
+        <script type="text/javascript" src="heatmap.js-2.0/build/heatmap.js"></script>
+        <script type="text/javascript" src="heatmap.js-2.0/plugins/gmaps-heatmap.js"></script>
+    </body>
+</html>

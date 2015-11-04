@@ -1,0 +1,113 @@
+<form action="WaspmoteMap" method="get" id="form1">
+                <button name="b_bosques" type="submit" form="form1" method="get" value="bosques">bosques</button>
+                <button name="b_ciudad" type="submit" form="form1" method="get" value="ciudad">ciudad</button>
+                <button name="b_inundaciones" type="submit" form="form1" method="get" value="inundaciones">inundaciones</button>
+                <button name="b_camaroneras" type="submit" form="form1" method="get" value="camaroneras">camaroneras</button>
+            </form>
+
+
+
+
+//Añadimos los markers...
+                <%  HashMap<String, Waspmote> motas = (HashMap<String, Waspmote>)request.getAttribute("motas"); 
+                    float test = motas.get("WM_CITY_2").obtenerMedicion("BAT");
+
+                    ArrayList<Waspmote> motasAL = new ArrayList<Waspmote>(motas.values());
+
+                    for(int i = 0; i < motasAL.size(); i++){
+                        Waspmote tmp = motasAL.get(i);
+                 %>
+
+                   <%=  "var myLatLng = {lat: -2.140023, lng: -79.921735};" %>
+                   <%= "var marker = new google.maps.Marker({ position: myLatlng, title:\"Hello World!\"});"  %>
+                   <%=  "marker.setMap(map);" %>
+
+                <% } %>
+
+
+ <%= "nombreMotas.push(\"" + tmp.obtenerIdWasp() + "\");" %>
+
+
+
+ <h2>Auto Refresh Header Example</h2>
+        <%
+           // Set refresh, autoload time as 5 seconds
+           response.setIntHeader("Refresh", 5);
+           // Get current time
+           Calendar calendar = new GregorianCalendar();
+           String am_pm;
+           int hour = calendar.get(Calendar.HOUR);
+           int minute = calendar.get(Calendar.MINUTE);
+           int second = calendar.get(Calendar.SECOND);
+           if(calendar.get(Calendar.AM_PM) == 0)
+              am_pm = "AM";
+           else
+              am_pm = "PM";
+           String CT = hour+":"+ minute +":"+ second +" "+ am_pm;
+           out.println("Current Time: " + CT + "\n");
+        %>
+
+
+
+
+
+
+
+
+
+
+
+
+      /*<%= "nombreMotas.push(\"" + tmp.obtenerIdWasp() + "\");" %>
+                <%= "timestamp[\"" + tmp.obtenerIdWasp() + "\"] = \"" + tmp.obtenerTimestamp() + "\";" %>            
+                <%= "medicion[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerMedicion(nombreMedicion) + "\");" %>
+                <%= "latitud[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerLatitud() + "\");" %>
+                <%= "longitud[\"" + tmp.obtenerIdWasp() + "\"] = parseFloat(\"" + tmp.obtenerLongitud() + "\");" %>
+                    
+                //Aqui cramos los markers...
+                <%=  "var myLatLng = {lat: " + tmp.obtenerLatitud() + ", lng: " + tmp.obtenerLongitud() + " };" %>
+                <%= "marker = new google.maps.Marker({ position: myLatLng, title:\"" + tmp.obtenerIdWasp() + "\"});"  %>
+                <%= "marker.setAnimation(google.maps.Animation.DROP);" %>
+               
+                <%= "markers.push(marker);" %>*/
+                   
+                //Si no usamos with, tenemos el closure problem. Creamos nuevo scope.
+                with({mark: marker}){
+                    mark.addListener('click',  function(){
+
+                           if(ventanaInformacion != null){
+                               ventanaInformacion.close();  //cerramos la ventana abierta...
+                           }
+                          
+                           var texto;
+                           if(mark.getTitle() != "WM_CITY_1"){
+                                texto = "<b>Nombre:</b> " + mark.getTitle() + "<br><b>Fecha/Hora</b>: " + timestamp[mark.getTitle()] + 
+                                        "<br><b>Medicion:</b> " + medicion[mark.getTitle()];
+                           }
+                           else{
+                               texto = "<b>Nombre:</b> " + mark.getTitle() + "<br><b>Fecha/Hora</b>: " + timestamp[mark.getTitle()] + 
+                                        "<br><b>Medicion:</b> " + medicion[mark.getTitle()]+ "<br><b>NODO COORDINADOR DIGIMESH</b>";
+                                        
+                           }
+
+                            //Creamos la ventana
+                            ventanaInformacion = new google.maps.InfoWindow({
+                                content: texto
+                            });
+
+                            //La mostramos...
+                            ventanaInformacion.open(map, mark);
+                       });
+                }
+                  
+                  <%= "marker.setMap(map);" %>
+
+
+
+
+
+
+***********************************ahora solo usando JSON...
+
+//Agregamos las motas...
+               
