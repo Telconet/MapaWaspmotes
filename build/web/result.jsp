@@ -117,6 +117,20 @@
                 margin-bottom: 3px;
                 font-style: italic;
             }
+            
+            #header_tipo {
+                 color: #FF0B0B;
+                 font-size: 20px;
+                 display: inline-block;
+                 text-align: right;
+                 float: right;
+                 margin: 10px;
+                 padding-right: 10px;
+                 overflow: hidden;
+                 font-weight: bold;
+                 font-style: oblique;
+                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            }
         </style>
         
        
@@ -129,6 +143,7 @@
         
         <div id="somediv">
             <h1 id="titulo">Waspmotes</h1>
+            <span id="header_tipo"></span>
         </div>
          <p id="mensaje_actualizacion">El mapa se actualiza cada minuto automáticamente. </p>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -304,6 +319,59 @@
                 <%= "tipo_med = \"" + tipo_med + "\";" %>  
                 <%= "unidades = \""  + (String)request.getAttribute("unidades") + "\";" %>
                 <%= "profundidad_seco = "  + (String)request.getAttribute("profundidad_seco") + ";" %>
+                    
+                
+                //Actualizamos el header para informar el tipo de medicion
+                var tipo_wasmpote;
+                if(tipo_med.indexOf("bosque") > -1){
+                    //document.getElementById("header_tipo").innerHTML = "Bosque";
+                    tipo_wasmpote = "Bosque";
+                }
+                else if(tipo_med.indexOf("ciudad") > -1){
+                    //document.getElementById("header_tipo").innerHTML = "Ciudad";
+                    tipo_wasmpote = "Ciudad";
+                }
+                else if(tipo_med.indexOf("camaronera") > -1){
+                    //document.getElementById("header_tipo").innerHTML = "Camaronera";
+                    tipo_wasmpote = "Camaronera";
+                }
+                else if(tipo_med.indexOf("inundaciones") > -1){
+                    //document.getElementById("header_tipo").innerHTML = "Inundaciones";
+                    tipo_wasmpote = "Inundaciones";
+                }
+                
+                //ahora el tipo de medicion;
+                var variable_medida;
+                
+                if(sensor == "TCA"){
+                    variable_medida = ": Temperatura"
+                }
+                else if(sensor == "BAT"){
+                    variable_medida = ": Batería";
+                }
+                 else if(sensor == "HUMA"){
+                    variable_medida = ": Humedad";
+                }
+                 else if(sensor == "CO2"){
+                    variable_medida = ": CO2";
+                }
+                 else if(sensor == "DUST"){
+                    variable_medida = ": Partículas";
+                }
+                 else if(sensor == "US"){
+                    variable_medida = ": Profundidad";
+                }
+                 else if(sensor == "LUM"){
+                    variable_medida = ": Luminosidad";
+                }
+                 else if(sensor == "MCP"){
+                    variable_medida = ": Ruido";
+                }
+                
+                document.getElementById("header_tipo").innerHTML = tipo_wasmpote + variable_medida;
+                
+                    
+                
                 //Creamos el heatmap usando heatmap.js
                 heatmap = new HeatmapOverlay(map, 
                 {
@@ -359,7 +427,7 @@
                     sensor:sensor
                   };
                   
-                //Creamos un listener onClock para el botón actualizar.  
+                //Creamos un listener onClick para el botón actualizar.  
                 $(document).on("click", "#actualizar", function() { 
                     $.get("WaspmoteMap", parametrosActualizacion, function(responseText) {  
                         //$("#somediv").text(responseText);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
@@ -626,7 +694,7 @@
                     ruido_btn.setAttribute("class", "boton_med");  
                     botones.push(ruido_btn);
                     
-                    luz_btn.appendChild(document.createTextNode("Luz"));
+                    luz_btn.appendChild(document.createTextNode("Luminosidad"));
                     luz_btn.setAttribute("value", "b_ciudad_LUM");
                     luz_btn.setAttribute("form", "form1");
                     luz_btn.setAttribute("method", "get");
@@ -634,7 +702,7 @@
                     luz_btn.setAttribute("class", "boton_med");
                      botones.push(luz_btn);
                     
-                    polvo_btn.appendChild(document.createTextNode("Polvo"));
+                    polvo_btn.appendChild(document.createTextNode("Partículas"));
                     polvo_btn.setAttribute("value", "b_ciudad_DUST");
                     polvo_btn.setAttribute("form", "form1");
                     polvo_btn.setAttribute("method", "get");
