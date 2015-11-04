@@ -542,7 +542,7 @@
             
             //Cargar Mapa
              google.maps.event.addDomListener(window, 'load', initialize);
-             //window.onload = startInterval;
+             window.onload = startInterval;
 
             
          </script>
