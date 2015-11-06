@@ -178,6 +178,7 @@
             var tipo_med;
             var sensor;
             var maximo;
+            var minimo;
             var profundidad_seco;
             var unidades;
             var intervaloRefreshaPagina = 60000;    //60 segundos.
@@ -261,6 +262,8 @@
                     ArrayList<Waspmote> motasAL = new ArrayList<Waspmote>(motas.values());
                     
                     String max = (String)request.getAttribute("maximo");
+                    String min = (String)request.getAttribute("minimo");
+                    
                     String tipo_med = (String)request.getAttribute("tipo_medicion");
 
                     for(int i = 0; i < motasAL.size(); i++){
@@ -315,6 +318,7 @@
                 <% } %>
                     
                 <%= "maximo = " + max + ";" %>
+                <%= "minimo = " + min + ";" %>
                 <%= "sensor = \"" + nombreMedicion + "\";" %>
                 <%= "tipo_med = \"" + tipo_med + "\";" %>  
                 <%= "unidades = \""  + (String)request.getAttribute("unidades") + "\";" %>
@@ -395,7 +399,7 @@
               
               
               //Añadimos los datos.. Max es el maximo global de la medicon)
-              testData={max: maximo, data:[]};
+              testData={max: maximo, min: minimo, data:[]};
             
               //Llenamos los datos...
               //window.alert(testData.max);
@@ -557,7 +561,7 @@
                 }
 
                 //Añadimos los datos.. Max es el maximo global de la medicon)
-                testData={max: maximo, data:[]};
+                testData={max: maximo, min: minimo, data:[]};
 
                 //Llenamos los datos...
                 //window.alert(testData.max);
@@ -584,7 +588,7 @@
                         //Borramos el mapa                    
                         //truco para borrar el mapa anterior... (creamos un punto con valor 0. si damos un 
                         //dato vacio, persiste el mapa en miniatura...
-                        heatmap.setData({max: 0, data:[{lat: -2.993122, lng: -95.457636, count: 0}]});
+                        heatmap.setData({max: 0, min: 0, data:[{lat: -2.993122, lng: -95.457636, count: 0}]});
 
                         //Vaciamos los arreglos 
                         Waspmotes.nombreMotas = [];

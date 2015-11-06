@@ -21,7 +21,7 @@
         </init-param>
          <init-param>      
             <param-name>IP</param-name>      
-            <param-value>172.24.4.10</param-value>    
+            <param-value>172.24.4.71</param-value>    
         </init-param>
         <init-param>      
             <param-name>MaxTCA</param-name>      
@@ -52,13 +52,51 @@
             <param-value>2000</param-value>    
         </init-param>
         <init-param>      
+            <param-name>MaxUS</param-name>      
+            <param-value>20.0</param-value>    
+        </init-param>
+        
+        
+        
+        
+        <init-param>      
+            <param-name>MinTCA</param-name>      
+            <param-value>0.0</param-value>    
+        </init-param>
+        <init-param>      
+            <param-name>MinHUMA</param-name>      
+            <param-value>0.0</param-value>    
+        </init-param>
+        <init-param>      
+            <param-name>MinDUST</param-name>      
+            <param-value>0.0</param-value>    
+        </init-param>
+        <init-param>      
+            <param-name>MinMCP</param-name>      
+            <param-value>50.0</param-value>    
+        </init-param>
+        <init-param>      
+            <param-name>MinLUM</param-name>      
+            <param-value>0.0</param-value>    
+        </init-param>
+        <init-param>      
+            <param-name>MinBAT</param-name>      
+            <param-value>0.0</param-value>    
+        </init-param>
+         <init-param>      
+            <param-name>MinCO2</param-name>      
+            <param-value>0</param-value>    
+        </init-param>
+        <init-param>      
             <param-name>MaxCO2</param-name>      
             <param-value>2000</param-value>    
         </init-param>
         <init-param>      
-            <param-name>MaxUS</param-name>      
-            <param-value>20.0</param-value>    
+            <param-name>MinxUS</param-name>      
+            <param-value>0.0</param-value>    
         </init-param>
+        
+        
         <init-param>      
             <param-name>profundidad_seco</param-name>      
             <param-value>167.78</param-value>    

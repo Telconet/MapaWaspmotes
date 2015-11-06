@@ -90,14 +90,16 @@ public class WaspmoteMap extends HttpServlet{
 
          //mandamos los datos de las motas al JSP, para visualización
         String maximoStr = "Max" + sensor;
-        
+        String minimoStr  = "Min" + sensor;
         String maximo = config.getInitParameter(maximoStr);
+        String minimo = config.getInitParameter(minimoStr);
                 
         if(esActualizacion.contains("no")){
             request.setAttribute("motas", motas);  
         }
         request.setAttribute("sensor", sensor);
         request.setAttribute("maximo", maximo);             //mandamos el valor máximo.
+        request.setAttribute("minimo", minimo); 
         request.setAttribute("tipo_medicion", tipo_med);             //mandamos el valor máximo.
         request.setAttribute("profundidad_seco",  config.getInitParameter("profundidad_seco")); 
        
