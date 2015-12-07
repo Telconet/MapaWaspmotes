@@ -150,7 +150,7 @@
         
         
         <div id="botones_div" >
-            <button class="botones_tipo" id="bosque_js" name="bosque_js" onclick='botones(this,"bosque")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Bosque</button><button class="botones_tipo" id="ciudad_js" name="ciudad_js" onclick='botones(this,"ciudad")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Ciudad</button><button class="botones_tipo" id="inundaciones_js" name="inundaciones_js" onclick='botones(this,"inundaciones")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Inundaciones</button><button class="botones_tipo" id="camaronera_js" name="camaronera_js"  onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Camaronera</button>
+            <button class="botones_tipo" id="bosque_js" name="bosque_js" onclick='botones(this,"bosque")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Bosque</button><button class="botones_tipo" id="ciudad_js" name="ciudad_js" onclick='botones(this,"ciudad")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Ciudad</button><button class="botones_tipo" id="inundaciones_js" name="inundaciones_js" onclick='botones(this,"inundaciones")' onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Inundaciones</button><!--<button class="botones_tipo" id="camaronera_js" name="camaronera_js"  onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Camaronera</button>-->
             <button id="actualizar" class="botones_tipo" onmouseover="cambiarBoton(this)" onmouseout="restaurarBoton(this)">Actualizar</button>
         </div>
         <div id="nombre_medicion">
