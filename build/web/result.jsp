@@ -417,8 +417,9 @@
                       var obj = {lat: Waspmotes.latitud[nombre], lng: Waspmotes.longitud[nombre], count: Waspmotes.medicion[nombre]};
                   }
                   
-                  
-                  testData.data.push(obj);
+                  if(Waspmotes.nombreMotas[i] !='WM_CITY_1'){
+                    testData.data.push(obj);
+                  }
               }
               
               heatmap.setData(testData);
@@ -570,7 +571,9 @@
 
                     var nombre = Waspmotes.nombreMotas[i];
                     var obj = {lat: Waspmotes.latitud[nombre], lng: Waspmotes.longitud[nombre], count: Waspmotes.medicion[nombre]};
-                    testData.data.push(obj);
+                    if(Waspmotes.nombreMotas[i] !='WM_CITY_1'){
+                        testData.data.push(obj);
+                    }
                 }
 
                 heatmap.setData(testData);   
